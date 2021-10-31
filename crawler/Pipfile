@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+nose2 = ">=0.10.0"
+
+[packages]
+beautifulsoup4 = "*"
+dataclasses-json = "*"
+httplib2 = "*"
+pendulum = "*"
+pymongo = "*"
+requests = "*"
+retry = "*"
+termcolor = "*"
+testfixtures = "*"
+tweepy = ">=4.1.0"
+mypy = "*"
+
+[requires]
+python_version = "3.10"

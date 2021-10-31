@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: crawler/Dockerfile
+    image: twitter_crawler
+    container_name: twitter_crawler
+    environment:
+      TZ: "Asia/Tokyo"
+      DATABASE_URL: "mongodb://mongo:27017/"
+      TWITTER_CONSUMER_KEY:
+      TWITTER_CONSUMER_SECRET:
+      TWITTER_ACCESS_TOKEN:
+      TWITTER_ACCESS_TOKEN_SECRET:
+      TWITTER_USER_IDS:
+      LOGGING_LEVEL:
+    depends_on:
+      - mongo
+    restart: always
+    networks:
+      - twitter-crawler-network
+  mongo:
+    image: mongo
+    container_name: twitter_crawler_mongodb
+    command: --logpath=/var/log/mongodb/mongo.log --profile=1 --slowms=100
+    environment:
+      MONGO_INITDB_DATABASE: twitterdb
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    volumes:
+      - datadir:/data/db
+      - mongo-log:/var/log/mongodb
+    ports:
+      - "27019:27017"
+    restart: always
+    networks:
+      - twitter-crawler-network
+volumes:
+  datadir:
+  mongo-log:
+
+networks:
+#  proxy-network:
+#    external: true
+#    name: proxy_network
+  twitter-crawler-network:
+    name: twitter_crawler_network
