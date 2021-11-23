@@ -1,6 +1,7 @@
 from typing import List
 
 from src.models.media import Media
+from src.utils.util import get_dict_value
 
 
 class TwitterUtils:
@@ -98,4 +99,18 @@ class TwitterUtils:
             return ''
 
         return urls[0]['expanded_url']
+
+    @staticmethod
+    def get_full_text(record: dict) -> str:
+        if record is None:
+            return ''
+
+        if 'extended_tweet' not in record:
+            return get_dict_value(record, 'text')
+
+        extended_tweet = get_dict_value(record, 'extended_tweet')
+        if 'full_text' not in extended_tweet:
+            return get_dict_value(record, 'text')
+
+        return get_dict_value(extended_tweet, 'full_text')
 

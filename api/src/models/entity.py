@@ -21,7 +21,7 @@ class RepliedTweet:
     def __init__(self, record: dict):
         self.id = get_dict_value(record, 'id')
         self.id_str = get_dict_value(record, 'id_str')
-        self.content = get_dict_value(record, 'text')
+        self.content = TwitterUtils.get_full_text(record)
         self.medias = TwitterUtils.get_twitter_medias(get_dict_value(record, 'extended_entities'))
         user: dict = get_dict_value(record, 'user')
         self.author_name = TwitterUtils.get_user_name(user)
@@ -55,7 +55,7 @@ class Tweet:
     def __init__(self, record: dict):
         self.id = get_dict_value(record, 'id')
         self.id_str = get_dict_value(record, 'id_str')
-        self.content = get_dict_value(record, 'text')
+        self.content = TwitterUtils.get_full_text(record)
         self.medias = TwitterUtils.get_twitter_medias(get_dict_value(record, 'extended_entities'))
         user: dict = get_dict_value(record, 'user')
         self.author_name = TwitterUtils.get_user_name(user)
