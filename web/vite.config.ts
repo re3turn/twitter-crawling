@@ -18,7 +18,7 @@ export default defineConfig({
       },
     },
     hmr: {
-      overlay: false,
+      port: parseInt(process.env.HTTPS_SERVICE_PORT, 10) || 3000
     },
     cors: {
       "origin": "*",

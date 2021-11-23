@@ -8,6 +8,7 @@ services:
     container_name: twitter_web
     environment:
       API_URL: http://api:8000
+      HTTPS_SERVICE_PORT:
       VIRTUAL_HOST:
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST:
