@@ -14,9 +14,7 @@ class TwitterStream(tweepy.Stream):
     def __init__(self, consumer_key, consumer_secret, access_token, access_token_secret) -> None:
         super().__init__(consumer_key, consumer_secret, access_token, access_token_secret)
         self._db_url: str = Env.get_environment('DATABASE_URL', required=True)
-        self._db_name: str = Env.get_environment('MONGO_INITDB_DATABASE', required=True)
-        self._db_username: str = Env.get_environment('MONGO_INITDB_ROOT_USERNAME', required=True)
-        self._db_password: str = Env.get_environment('MONGO_INITDB_ROOT_PASSWORD', required=True)
+        self._db_name: str = Env.get_environment('MONGO_DATABASE', required=True)
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
@@ -37,7 +35,7 @@ class TwitterStream(tweepy.Stream):
     def on_data(self, tweepy_status):
         # This is the meat of the script...it connects to your mongoDB and stores the tweet
         try:
-            with MongoClient(self._db_url, username=self._db_username, password=self._db_password) as client:
+            with MongoClient(self._db_url) as client:
                 # If it doesn't exist, it will be created.
                 database = client[self._db_name]
                 status_json = json.loads(tweepy_status)

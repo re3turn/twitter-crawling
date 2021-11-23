@@ -1,6 +1,42 @@
 version: "3.7"
 services:
-  app:
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    image: twitter_web
+    container_name: twitter_web
+    environment:
+      API_URL: http://api:8000
+      VIRTUAL_HOST:
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST:
+      LETSENCRYPT_EMAIL:
+    volumes:
+      - ./web:/usr/src/web
+      - node_modules:/usr/src/web/node_modules
+    ports:
+      - "53000:3000"
+    depends_on:
+      - api
+    restart: always
+    networks:
+      - twitter-crawler-network
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    image: twitter_web_api
+    container_name: twitter_web_api
+    environment:
+      DATABASE_URL:
+      MONGO_DATABASE: twitterdb
+    depends_on:
+      - mongo
+    restart: always
+    networks:
+      - twitter-crawler-network
+  crawler:
     build:
       context: .
       dockerfile: crawler/Dockerfile
@@ -8,7 +44,8 @@ services:
     container_name: twitter_crawler
     environment:
       TZ: "Asia/Tokyo"
-      DATABASE_URL: "mongodb://mongo:27017/"
+      DATABASE_URL:
+      MONGO_DATABASE: twitterdb
       TWITTER_CONSUMER_KEY:
       TWITTER_CONSUMER_SECRET:
       TWITTER_ACCESS_TOKEN:
@@ -25,7 +62,7 @@ services:
     container_name: twitter_crawler_mongodb
     command: --logpath=/var/log/mongodb/mongo.log --profile=1 --slowms=100
     environment:
-      MONGO_INITDB_DATABASE: twitterdb
+      MONGO_DATABASE: twitterdb
       MONGO_INITDB_ROOT_USERNAME:
       MONGO_INITDB_ROOT_PASSWORD:
     volumes:
