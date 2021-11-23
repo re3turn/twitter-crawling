@@ -13,7 +13,7 @@ services:
       LETSENCRYPT_HOST:
       LETSENCRYPT_EMAIL:
     ports:
-      - "53000:3000"
+      - "53003:3000"
     depends_on:
       - api
     restart: always
