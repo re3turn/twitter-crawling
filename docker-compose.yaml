@@ -12,9 +12,6 @@ services:
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST:
       LETSENCRYPT_EMAIL:
-    volumes:
-      - ./web:/usr/src/web
-      - node_modules:/usr/src/web/node_modules
     ports:
       - "53000:3000"
     depends_on:
