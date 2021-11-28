@@ -10,6 +10,7 @@ export function tweetMetaTag(tweet: Tweet & {replies: Tweet[]}, metaData: any) {
         {property: 'og:url', content: location.href},
         {property: 'og:site_name', content: 'tweet'},
         {property: 'robots', content: 'noindex, nofollow'},
+        {property: 'referrer', content: 'no-referrer'},
     ]
 }
 
@@ -22,5 +23,6 @@ export function userMetaTag(user: ProfileDetails, metaData: any) {
         {property: 'og:url', content: location.href},
         {property: 'og:site_name', content: 'tweet'},
         {property: 'robots', content: 'noindex, nofollow'},
+        {property: 'referrer', content: 'no-referrer'},
     ]
 }
