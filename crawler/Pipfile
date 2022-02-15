@@ -19,6 +19,7 @@ termcolor = "*"
 testfixtures = "*"
 tweepy = ">=4.1.0"
 mypy = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.10"

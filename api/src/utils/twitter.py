@@ -1,6 +1,7 @@
 from typing import List
 
 from src.models.media import Media
+from src.service.s3 import S3
 from src.utils.util import get_dict_value
 
 
@@ -42,7 +43,7 @@ class TwitterUtils:
                 url = TwitterUtils._get_video_url(media)
 
             if url:
-                media_list.append(Media(media['type'], url))
+                media_list.append(Media(media['type'], S3.gen_s3_url(url)))
 
         return media_list
 

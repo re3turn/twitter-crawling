@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 import json
 import logging
-from typing import Any
+from typing import Any, Dict, List
 
 import pendulum
-import tweepy
+import tweepy  # type: ignore
 from pymongo import MongoClient
 
 from app.env import Env
+from app.save_media import Media
 
 
 class TwitterStream(tweepy.Stream):
@@ -19,6 +20,8 @@ class TwitterStream(tweepy.Stream):
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
         self._api: tweepy.API = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
+
+        self._media = Media()
 
         logger.debug(f'Setting info. _db_url={self._db_url}')
 
@@ -45,17 +48,17 @@ class TwitterStream(tweepy.Stream):
         except Exception as e:
             logger.error(e)
 
-    @staticmethod
-    def _insert_tweet(database: Any, status_json: Any) -> None:
+    def _insert_tweet(self, database: Any, status_json: Any) -> None:
         if 'delete' in status_json:
             TwitterStream._delete_status(database, status_json)
         else:
             database.tweet.insert_one(status_json)
-
-        if 'user' in status_json and 'id_str' in status_json:
-            user = status_json['user']
-            logger.info(f'Tweet collected. user = {user["screen_name"]}, user_id = {user["id_str"]}, '
-                        f'tweet_id = {status_json["id_str"]}')
+            if 'user' in status_json and 'id_str' in status_json:
+                user = status_json['user']
+                logger.info(f'Tweet collected. user = {user["screen_name"]}, user_id = {user["id_str"]}, '
+                            f'tweet_id = {status_json["id_str"]}')
+                media_urls: List[Dict] = self._media.save_tweet_media(status_json, user["id_str"])
+                self._insert_media(database, media_urls)
 
     def _insert_user(self, database: Any, status_json: Any) -> None:
         if 'delete' in status_json:
@@ -88,6 +91,12 @@ class TwitterStream(tweepy.Stream):
 
         logger.info(f'Delete tweet. user_id = {delete_status_json["status"]["user_id_str"]}, '
                     f'tweet_id = {delete_status_json["status"]["id_str"]}')
+
+    @staticmethod
+    def _insert_media(database: Any, media_urls: List[Dict]) -> None:
+        if len(media_urls) == 0:
+            return
+        database.media.insert_many(media_urls)
 
 
 logger: logging.Logger = logging.getLogger(__name__)
