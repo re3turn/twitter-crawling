@@ -17,6 +17,10 @@ services:
       - "53003:3000"
     depends_on:
       - api
+    logging:
+      options:
+        max-file: '3'
+        max-size: 10m
     restart: always
     networks:
       - twitter-crawler-network
@@ -33,6 +37,10 @@ services:
       BUCKET_NAME: ${CREATE_BUCKET_NAME}
     depends_on:
       - mongo
+    logging:
+      options:
+        max-file: '3'
+        max-size: 10m
     restart: always
     networks:
       - twitter-crawler-network
@@ -59,6 +67,10 @@ services:
     depends_on:
       - mongo
       - minio
+    logging:
+      options:
+        max-file: '3'
+        max-size: 10m
     restart: always
     networks:
       - twitter-crawler-network
@@ -75,6 +87,10 @@ services:
       - mongo-log:/var/log/mongodb
     ports:
       - "27019:27017"
+    logging:
+      options:
+        max-file: '3'
+        max-size: 10m
     restart: always
     networks:
       - twitter-crawler-network
@@ -92,6 +108,10 @@ services:
     ports:
       - "59090:9000"
       - "59091:9001"
+    logging:
+      options:
+        max-file: '3'
+        max-size: 10m
     restart: always
     volumes:
       - minio-data:/data
