@@ -64,6 +64,7 @@ services:
       BUCKET_NAME: ${CREATE_BUCKET_NAME}
       TWITTER_USER_IDS:
       LOGGING_LEVEL:
+      OUTPUT_LOG_FILE_ENABLED: "false"
     depends_on:
       - mongo
       - minio
