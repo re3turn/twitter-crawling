@@ -30,9 +30,13 @@ class TwitterStream(tweepy.Stream):
         # Called initially to connect to the Streaming API
         logger.info("You are now connected to the streaming API.")
 
+    def on_connection_error(self):
+        #  This is called when the stream connection errors or times out
+        logger.warning("Stream connection has errored or timed out")
+
     def on_request_error(self, status_code):
         # On error - if an error occurs, display the error / status code
-        logger.error('An Error has occured: ' + repr(status_code))
+        logger.error('An Error has occurred: ' + repr(status_code))
         return False
 
     def on_data(self, tweepy_status):
