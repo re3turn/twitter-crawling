@@ -128,7 +128,9 @@ services:
       - MINIO_ROOT_PASSWORD
       - CREATE_BUCKET_NAME
     entrypoint: >
-      /bin/sh -c " /usr/bin/mc config host add minioAlias http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /bin/sh -c "
+      for i in {1..10}; do (/usr/bin/mc config host add minioAlias http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}) 2> /dev/null && break; sleep 1; done;
+      /usr/bin/mc config host add minioAlias http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       /usr/bin/mc mb --ignore-existing minioAlias/${CREATE_BUCKET_NAME};
       /usr/bin/mc policy set public minioAlias/${CREATE_BUCKET_NAME};
       exit 0;
