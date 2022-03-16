@@ -3,7 +3,7 @@
 import logging
 from typing import List
 
-from app.twitter_stream import TwitterStream
+from app.TwitterStream import TwitterStream
 from app.env import Env
 from app.log import Log
 
