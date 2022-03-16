@@ -30,6 +30,9 @@ class TwitterStream(tweepy.Stream):
         # Called initially to connect to the Streaming API
         logger.info("You are now connected to the streaming API.")
 
+    def on_closed(self, response):
+        logger.warning("Stream connection closed by Twitter")
+
     def on_connection_error(self):
         #  This is called when the stream connection errors or times out
         logger.warning("Stream connection has errored or timed out")
