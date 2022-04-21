@@ -20,6 +20,7 @@ class Media:
         medias: List[Dict] = []
         media_urls: List[str] = TwitterUtils.get_twitter_medias(tweet['extended_entities'])
         for url in media_urls:
+            original_image_url = url
             if url.startswith('https://pbs.twimg.com/media') or url.startswith('http://pbs.twimg.com/media'):
                 original_image_url = TwitterUtils.make_original_image_url(url)
 
