@@ -20,9 +20,6 @@ class Crawler:
                                         access_token=access_token, access_token_secret=access_token_secret)
 
     def main(self) -> None:
-        user_ids: str = Env.get_environment('TWITTER_USER_IDS', required=True)
-        user_id_list: List[str] = user_ids.split(',')
-
         interval_minutes: int = int(Env.get_environment('INTERVAL', default='5'))
         user_ids: str = Env.get_environment('TWITTER_USER_IDS', required=True)
 
