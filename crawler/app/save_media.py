@@ -16,7 +16,7 @@ class Media:
 
     def save_tweet_media(self, tweet: dict, user_id: str) -> List[Dict]:
         if 'extended_entities' not in tweet:
-            return {}
+            return []
         medias: List[Dict] = []
         media_urls: List[str] = TwitterUtils.get_twitter_medias(tweet['extended_entities'])
         for url in media_urls:
