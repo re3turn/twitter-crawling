@@ -59,7 +59,7 @@ class Twitter:
             logger.error(e)
 
     def _insert_tweet(self, database: Any, status_json: Any) -> None:
-        if 'user' in status_json and 'id_str' in status_json:
+        if 'user' not in status_json and 'id_str' not in status_json:
             return
 
         user = status_json['user']
