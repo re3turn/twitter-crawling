@@ -107,7 +107,10 @@ class TwitterUtils:
             return ''
 
         if 'extended_tweet' not in record:
-            return get_dict_value(record, 'text')
+            if 'full_text' in record:
+                return get_dict_value(record, 'full_text')
+            else:
+                return get_dict_value(record, 'text')
 
         extended_tweet = get_dict_value(record, 'extended_tweet')
         if 'full_text' not in extended_tweet:
